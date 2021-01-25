@@ -1,4 +1,4 @@
-# icebreaker
+# College Voyage
 
 ## Project setup
 ```

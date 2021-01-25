@@ -17,7 +17,7 @@
       >
 
         <h2 class="not-margin">
-          Welcome to <b>Icebreaker</b>
+          Welcome to <b>College Voyage</b>
         </h2>
         <div class="con-form">
           <vs-input
