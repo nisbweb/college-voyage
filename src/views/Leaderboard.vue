@@ -54,7 +54,6 @@ export default {
       snapshot.forEach(element => {
         this.participants.push(element.data())
       })
-      console.log(this.leaderboard)
     })
   },
   computed: {
@@ -68,7 +67,6 @@ export default {
         obj.completedTime = moment(obj.completedTime.toDate()).format('hh : mm A')
         return obj
       })
-      console.log(temp)
       return temp
     }
   }

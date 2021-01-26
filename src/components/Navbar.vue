@@ -7,17 +7,29 @@
             <img src="@/assets/Condensed---White.png" alt="">
           </div> <span id="brandText">College Voyage</span>
         </template>
-        <template #right>
-          <vs-button flat >Login</vs-button>
-          <vs-button>Get Started</vs-button>
+        <template #right v-if="user.id !== null">
+          <vs-button flat @click="logout" >Logout</vs-button>
         </template>
       </vs-navbar>
     </div>
 </template>
 
 <script>
+import firebaseApp from '@/firebase_config'
+import { mapGetters } from 'vuex'
 export default {
-
+  methods: {
+    logout () {
+      firebaseApp.auth.signOut()
+      this.$store.commit('USER_LOGOUT')
+      this.$router.push({ name: 'Login' })
+    }
+  },
+  computed: {
+    ...mapGetters({
+      user: 'GET_USER'
+    })
+  }
 }
 </script>
 

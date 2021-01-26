@@ -42,10 +42,24 @@ export default new Vuex.Store({
         state.user.progress = payload.progress
       }
       state.logged = true
-      console.log(state.user)
     },
     CHANGE_LOADING: (state, payload) => {
       state.routerLoading = payload
+    },
+    USER_LOGOUT: (state) => {
+      state.user = {
+        id: null,
+        displayName: null,
+        email: null,
+        completed: null,
+        completedTime: null,
+        progress: null
+      }
+      state.logged = false
+      state.admin = {
+        started: null,
+        questionCount: null
+      }
     },
     CHANGE_ADMIN: (state, payload) => {
       if (typeof payload.started !== 'undefined') {
@@ -65,7 +79,6 @@ export default new Vuex.Store({
   actions: {
     FETCH_USER: ({ commit }, payload) => {
       firebaseApp.db.collection('users').doc(payload).get().then(val => {
-        // // console.log(val.id, val.data());
         commit('EDIT_USER', val.data())
       }).catch(err => {
         console.error(err)

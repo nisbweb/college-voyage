@@ -8,10 +8,25 @@
       <vs-row
         class="flex-Center h-100"
         align="center"
-        justify="center"
+        justify="space-around"
       >
         <vs-col
-          w="7"
+          lg="5"
+          w="6"
+          sm="8"
+          xs="11"
+          vs-type="flex"
+          justify="center"
+          align="center"
+          class="form"
+          v-if="isImage"
+        >
+          <img id="questionImage" v-bind:src="require(`@/assets/${question.image}`)" alt="Question image">
+
+        </vs-col>
+        <vs-col
+          :lg="isImage ? 4 : 7"
+          :w="isImage ? 5 : 8"
           sm="8"
           xs="11"
           vs-type="flex"
@@ -20,7 +35,8 @@
           class="form"
         >
 
-          <SingleInput :SubmitAnswer="SubmitAnswer" :loading="loading" :question="question" />
+          <SingleInput :bus="ChildInput" ref="ChildInput" v-if="question.type === 'single-input'" :SubmitAnswer="SubmitAnswer" :loading="loading" :question="question" :questionNumber="user.progress+1"/>
+          <Crossword  :bus="ChildInput" ref="ChildInput" v-else :SubmitAnswer="SubmitAnswer" :loading="loading" :question="question"  :questionNumber="user.progress+1"/>
 
         </vs-col>
       </vs-row>
@@ -31,28 +47,35 @@
 <script>
 // @ is an alias to /src
 import SingleInput from '@/components/SingleInput.vue'
+import Crossword from '@/components/Crossword.vue'
 import firebaseApp from '@/firebase_config'
 import { mapGetters } from 'vuex'
+import Vue from 'vue'
 export default {
   name: 'Home',
   data () {
     return {
       question: null,
-      loading: false
+      loading: false,
+      ChildInput: new Vue()
     }
   },
   components: {
-    SingleInput
+    SingleInput,
+    Crossword
   },
   computed: {
     ...mapGetters({
       user: 'GET_USER',
       admin: 'GET_ADMIN',
       loadingState: 'GET_LOADING'
-    })
+    }),
+    isImage () {
+      return this.question !== null && typeof this.question.image !== 'undefined'
+    }
   },
   mounted () {
-    if (this.user.progress + 1 === this.admin.questionCount || this.user.progress >= this.admin.questionCount) {
+    if (this.user.progress >= this.admin.questionCount) {
       this.QuizCompleted()
     }
     this.GetQuestion()
@@ -74,25 +97,23 @@ export default {
     // returns true or false
     SubmitAnswer (payload) {
       this.loading = true
-      console.log(payload)
-      setTimeout(() => {
-        console.log(this.user.progress + 1 === this.admin.questionCount)
-        if (this.user.progress + 1 === this.admin.questionCount || this.user.progress >= this.admin.questionCount) {
-          this.QuizCompleted()
+      this.$axios.post('/api/submit', {
+        question: `question_${this.user.progress + 1}`,
+        answer: payload,
+        type: this.question.type
+      }).then(({ data }) => {
+        if (data.success === true && data.submission === true) {
+          this.CorrectAnswerHandler()
+          this.ChildInput.$emit('reset')
+        } else if (data.success === true && data.submission === false) {
+          this.WrongAnswerHandler()
         } else {
-          firebaseApp.db.collection('users').doc(this.user.id).update({
-            progress: this.user.progress + 1
-          }).then(() => {
-            this.loading = false
-            this.$store.commit('INCREMENT_PROGRESS')
-            this.GetQuestion()
-          }).catch(err => {
-            this.loading = false
-            console.error(err)
-            this.ErrorHandler(err)
-          })
+          return new Error('Something went wrong')
         }
-      }, 3000)
+      }).catch(err => {
+        console.error(err)
+        this.ErrorHandler(err)
+      })
     },
     ErrorHandler (error) {
       this.$vs.notification({
@@ -100,7 +121,7 @@ export default {
         color: 'danger',
         position: 'top-center',
         title: 'An error occured!',
-        description: error.message
+        text: error.message
       })
     },
     QuizCompleted () {
@@ -116,7 +137,49 @@ export default {
         console.error(err)
         this.ErrorHandler(err)
       })
+    },
+    CorrectAnswerHandler () {
+      if (this.user.progress + 1 === this.admin.questionCount || this.user.progress >= this.admin.questionCount) {
+        this.QuizCompleted()
+      } else {
+        firebaseApp.db.collection('users').doc(this.user.id).update({
+          progress: this.user.progress + 1
+        }).then(() => {
+          this.loading = false
+          this.$vs.notification({
+            progress: true,
+            color: 'success',
+            position: 'top-center',
+            title: 'Lets go!!',
+            text: 'Correct answer.'
+          })
+          this.$store.commit('INCREMENT_PROGRESS')
+          this.GetQuestion()
+        }).catch(err => {
+          this.loading = false
+          console.error(err)
+          this.ErrorHandler(err)
+        })
+      }
+    },
+    WrongAnswerHandler () {
+      this.loading = false
+      this.$vs.notification({
+        progress: true,
+        color: 'danger',
+        position: 'top-center',
+        title: 'Oops!',
+        text: 'Wrong answer.'
+      })
     }
   }
 }
 </script>
+
+<style lang="css" scoped>
+#questionImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+</style>

@@ -10,6 +10,8 @@
     >
       <vs-col
         w="6"
+        sm="8"
+        xs="10"
         vs-type="flex"
         justify="center"
         align="center"
@@ -57,6 +59,7 @@
         <vs-row>
           <vs-col
             w="8"
+            xs="12"
             class="buttonWrapper"
           >
             <vs-button
@@ -70,6 +73,7 @@
 
           <vs-col
             w="4"
+            xs="12"
             class="buttonWrapper"
           >
             <vs-button
@@ -96,12 +100,21 @@ import firebaseApp from '@/firebase_config.js'
 export default {
   data () {
     return {
-      email: 'sgkul2000@gmail.com',
-      password: 'helloworld',
-      displayName: 'Shreesh Kulkarni'
+      email: '',
+      password: '',
+      displayName: ''
     }
   },
   methods: {
+    ErrorHandler (error) {
+      this.$vs.notification({
+        progress: true,
+        color: 'danger',
+        position: 'top-center',
+        title: 'An error occured!',
+        text: error.message
+      })
+    },
     emailLogin () {
       firebaseApp.auth.createUserWithEmailAndPassword(this.email, this.password).then(async (data) => {
         // console.log({
@@ -121,7 +134,7 @@ export default {
         // localStorage.setItem('logged', true)
         // localStorage.setItem('uid', data.user.uid)
       }).catch(error => {
-        console.log(error)
+        console.error(error)
         if (error.message === 'The email address is already in use by another account.') {
           firebaseApp.auth.signInWithEmailAndPassword(this.email, this.password)
             .then((data) => {
@@ -136,17 +149,26 @@ export default {
     googles () {
       var provider = new firebase.auth.GoogleAuthProvider()
       firebaseApp.auth.signInWithPopup(provider).then(data => {
-        firebaseApp.db.collection('users').doc(data.user.uid).set({
-          displayName: data.user.displayName,
-          email: data.user.email,
-          id: data.user.uid,
-          completed: false,
-          completedTime: null,
-          progress: 0
-        }).then(() => {
-          this.userLoggedIn(data.user.uid)
+        firebaseApp.db.collection('users').doc(data.user.uid).get().then((val) => {
+          if (!val.exists) {
+            firebaseApp.db.collection('users').doc(data.user.uid).set({
+              displayName: data.user.displayName,
+              email: data.user.email,
+              id: data.user.uid,
+              completed: false,
+              completedTime: null,
+              progress: 0
+            }).then(() => {
+              this.userLoggedIn(data.user.uid)
+            }).catch(err => {
+              console.error(err)
+            })
+          } else {
+            this.userLoggedIn(data.user.uid)
+          }
         }).catch(err => {
           console.error(err)
+          this.ErrorHandler(err)
         })
         // localStorage.setItem('uid', data.user.uid)
         // localStorage.setItem('logged', true)
@@ -177,9 +199,9 @@ export default {
 .inputMargin {
   margin: 0.75rem 0;
 }
-.buttonMargin {
+/* .buttonMargin {
   margin: 0.7rem 0;
-}
+} */
 .buttonWrapper {
   padding: 3px 10px;
 }

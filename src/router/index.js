@@ -63,7 +63,6 @@ const GetAdmin = new Promise((resolve, reject) => {
     .doc('actual')
     .get()
     .then(val => {
-      // console.log(val)
       store.commit('CHANGE_ADMIN', val.data())
       resolve()
     })
@@ -80,7 +79,6 @@ const GetUser = (payload) => {
       .doc(payload)
       .get()
       .then(val => {
-        // console.log(val.data())
         store.commit('EDIT_USER', val.data())
         resolve()
       })
@@ -103,7 +101,6 @@ router.beforeEach(async (to, from, next) => {
       // store.dispatch('FETCH_USER', user.uid)
       await Promise.all([GetAdmin, GetUser(user.uid)])
       if (store.state.admin.started === true) {
-        console.log(store.state.user.completed)
         if (store.state.user.completed === true) {
           if (to.name === 'Leaderboard') {
             store.commit('CHANGE_LOADING', false)

@@ -1,10 +1,13 @@
 <template>
   <div id="QuestionMain">
 
-    <h2 class="not-margin">
-      #Question
-    </h2>
-    <p style="text-align:left;">{{ question.question }}</p>
+    <div class="questionHeader">
+
+      <h2 class="not-margin">
+        #Question_{{questionNumber}}
+      </h2>
+    </div>
+    <div style="text-align:left;margin: 5px 15px 10px 15px;">{{ question.question }}</div>
     <vs-row align="center">
       <vs-col w="9">
 
@@ -37,10 +40,15 @@ export default {
       answer: ''
     }
   },
-  props: ['question', 'loading', 'SubmitAnswer'],
+  props: ['question', 'loading', 'SubmitAnswer', 'questionNumber', 'bus'],
+  mounted () {
+    this.bus.$on('reset', this.reset)
+  },
   methods: {
     ForwardAnswer () {
       this.SubmitAnswer(this.answer)
+    },
+    reset () {
       this.answer = ''
     }
   }
@@ -59,7 +67,7 @@ export default {
 </style>
 
 <style lang="css" scoped>
-.submitElement {
-  padding: 3px 10px;
-}
+/* .submitElement {
+  margin: 3px 10px;
+} */
 </style>
