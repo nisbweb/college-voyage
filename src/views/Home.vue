@@ -97,12 +97,15 @@ export default {
     // returns true or false
     SubmitAnswer (payload) {
       this.loading = true
-      this.$axios.post('/api/submit', {
+      this.$axios.post('', {
         question: `question_${this.user.progress + 1}`,
         answer: payload,
         type: this.question.type
       }).then(({ data }) => {
         if (data.success === true && data.submission === true) {
+          if (this.question.show === true) {
+            this.notifyInsta()
+          }
           this.CorrectAnswerHandler()
           this.ChildInput.$emit('reset')
         } else if (data.success === true && data.submission === false) {
@@ -116,6 +119,7 @@ export default {
       })
     },
     ErrorHandler (error) {
+      this.loading = false
       this.$vs.notification({
         progress: true,
         color: 'danger',
@@ -133,7 +137,6 @@ export default {
         this.$store.commit('QUIZ_COMPLETED')
         this.$router.push({ name: 'Leaderboard' })
       }).catch(err => {
-        this.loading = false
         console.error(err)
         this.ErrorHandler(err)
       })
@@ -170,6 +173,18 @@ export default {
         position: 'top-center',
         title: 'Oops!',
         text: 'Wrong answer.'
+      })
+    },
+    notifyInsta () {
+      this.$vs.notification({
+        title: '<span class="instagramLink" >@bot_binod</span>, who you may know is on instagram, would you like to view their profile?',
+        duration: 'none',
+        position: 'top-center',
+        icon: '<i class="bx bxs-user-pin" ></i>',
+        square: true,
+        onClick: () => {
+          window.open('https://www.instagram.com/bot_binod/', '_blank')
+        }
       })
     }
   }

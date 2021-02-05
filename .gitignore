@@ -26,3 +26,4 @@ pnpm-debug.log*
 
 # firebase files
 .firebase/
+firebase-debug.log
