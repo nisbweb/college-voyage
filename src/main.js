@@ -14,7 +14,7 @@ Vue.use({
     Vue.prototype.$axios = axios.create({
       baseURL: process.env.VUE_APP_BASE_URL,
       // baseURL: 'http://localhost:5000/',
-      // baseURL: 'https://9qdwqqlvec.execute-api.ap-south-1.amazonaws.com/default/SubmissionHandler',
+      // baseURL: 'https://z3e833thq6.execute-api.ap-south-1.amazonaws.com/default/SubmissionHandler',
       headers: {
         authorization: store.state.user.id
       }
