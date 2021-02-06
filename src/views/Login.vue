@@ -58,7 +58,7 @@
         </div>
         <vs-row>
           <vs-col
-            w="8"
+            w="7"
             xs="12"
             class="buttonWrapper"
           >
@@ -72,7 +72,7 @@
           </vs-col>
 
           <vs-col
-            w="4"
+            w="5"
             xs="12"
             class="buttonWrapper"
           >
@@ -81,7 +81,7 @@
               class="buttonMargin"
               @click="googles"
             >
-              Google Sign in
+              <img style="width: 18px; padding: 0 10px 0 0;" src="@/assets/google.svg" alt="Google logo"> Sign in with google
             </vs-button>
           </vs-col>
         </vs-row>
@@ -186,7 +186,7 @@ export default {
 
 <style lang="css">
 .h-100 {
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 100px);
   /* width: 100%; */
 }
 

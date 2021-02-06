@@ -16,13 +16,15 @@
           placeholder="Your answer"
           class="submitElement"
           :loading="loading"
+          ref="singleInput"
+          @keyup.enter="ForwardAnswer"
         />
       </vs-col>
       <vs-col w="3">
 
         <vs-button
           block
-          class="submitElement"
+          class="submitElement buttonElement"
           :loading="loading"
           @click="ForwardAnswer"
         >
@@ -43,6 +45,8 @@ export default {
   props: ['question', 'loading', 'SubmitAnswer', 'questionNumber', 'bus'],
   mounted () {
     this.bus.$on('reset', this.reset)
+    const inputElement = document.querySelector('.submitElement input')
+    inputElement.focus()
   },
   methods: {
     ForwardAnswer () {
@@ -61,13 +65,20 @@ export default {
 }
 
 .h-100 {
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 100px);
   /* width: 100%; */
+}
+#QuestionMain > div.vs-row > div.vs-col.vs-col--w-9.vs-col--offset-0.vs-col--lg-0.vs-col--sm-0.vs-col--xs-0 > div > div {
+  padding: 0 3rem 0 0;
+}
+.vs-input__loading {
+  margin: 1rem;
 }
 </style>
 
 <style lang="css" scoped>
-/* .submitElement {
-  margin: 3px 10px;
-} */
+.buttonElement {
+  padding: 0 0.1rem;
+}
+
 </style>

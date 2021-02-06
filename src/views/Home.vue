@@ -36,7 +36,7 @@
         >
 
           <SingleInput :bus="ChildInput" ref="ChildInput" v-if="question.type === 'single-input'" :SubmitAnswer="SubmitAnswer" :loading="loading" :question="question" :questionNumber="user.progress+1"/>
-          <Crossword  :bus="ChildInput" ref="ChildInput" v-else :SubmitAnswer="SubmitAnswer" :loading="loading" :question="question"  :questionNumber="user.progress+1"/>
+          <Crossword  :bus="ChildInput" ref="ChildInput" v-if="question.type === 'crossword'" :SubmitAnswer="SubmitAnswer" :loading="loading" :question="question"  :questionNumber="user.progress+1"/>
 
         </vs-col>
       </vs-row>

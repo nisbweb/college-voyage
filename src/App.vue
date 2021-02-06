@@ -3,18 +3,34 @@
     <Navbar />
     <Loading :status="loadingState" />
     <router-view style="margin-top: 44px" />
+    <Footer />
   </div>
 </template>
 
 <script>
 import Navbar from '@/components/Navbar.vue'
 import Loading from '@/components/Loading.vue'
+import Footer from '@/components/Footer.vue'
+// import firebaseApp from '@/firebase_config'
 import { mapGetters } from 'vuex'
 
 export default {
   components: {
     Navbar,
-    Loading
+    Loading,
+    Footer
+  },
+  mounted () {
+    // // To reset all users
+    // firebaseApp.db.collection('users').get().then(function (querySnapshot) {
+    //   querySnapshot.forEach(function (doc) {
+    //     doc.ref.update({
+    //       completedTime: null,
+    //       completed: false,
+    //       progress: 0
+    //     })
+    //   })
+    // })
   },
   computed: {
     ...mapGetters({
@@ -64,7 +80,7 @@ span.instagramLink {
   -webkit-text-fill-color: transparent;
 }
 .h-100 {
-  height: calc(100vh - 70px);
+  min-height: calc(100vh - 100px);
   /* width: 100%; */
 }
 </style>

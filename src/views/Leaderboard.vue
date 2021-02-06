@@ -1,5 +1,5 @@
 <template>
-  <div id="main">
+  <div id="LeaderboardMain">
     <h3>#Leaderboard</h3>
     <div id="listWrapper">
       <vs-table>
@@ -74,5 +74,8 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+#LeaderboardMain {
+  min-height: calc(100vh - 100px)
+}
 </style>

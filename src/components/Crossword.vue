@@ -14,8 +14,9 @@
         <vs-input
           v-model="answer[index].answer"
           :placeholder="i.placeholder"
-          class="submitElement"
+          class="submitElement crosswordInputs"
           :loading="loading"
+          @keyup.enter="NextHandler(index)"
         />
       </vs-col>
       <vs-col w="12">
@@ -84,10 +85,20 @@ export default {
   props: ['question', 'loading', 'SubmitAnswer', 'questionNumber', 'bus'],
   mounted () {
     this.bus.$on('reset', this.reset)
+    const inputElement = document.querySelector('.submitElement.crosswordInputs input')
+    inputElement.focus()
   },
   methods: {
     ForwardAnswer () {
       this.SubmitAnswer(this.answer.map(element => element.answer))
+    },
+    NextHandler (index) {
+      if (index === 9) {
+        this.ForwardAnswer()
+      } else {
+        const inputElements = document.querySelectorAll('.submitElement.crosswordInputs input')
+        inputElements[index + 1].focus()
+      }
     },
     reset () {
       this.answer = [
@@ -143,7 +154,7 @@ export default {
 }
 
 .h-100 {
-  min-height: calc(100vh - 70px);
+  min-height: calc(100vh - 100px);
   /* width: 100%; */
 }
 </style>

@@ -48,5 +48,6 @@ export default {
   left: 0;
   width: 100%;
   background: white;
+  z-index: 10;
 }
 </style>
