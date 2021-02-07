@@ -61,7 +61,7 @@ const GetAdmin = new Promise((resolve, reject) => {
   firebaseApp.db
     .collection('admin')
     .doc('actual')
-    .get()
+    .get({ source: 'server' })
     .then(val => {
       store.commit('CHANGE_ADMIN', val.data())
       resolve()
@@ -120,6 +120,9 @@ router.beforeEach(async (to, from, next) => {
         }
         // store.commit('CHANGE_LOADING', false)
         // next()
+      } else if (from.name === 'Lobby') {
+        store.commit('CHANGE_LOADING', false)
+        next()
       } else if (to.name === 'Lobby') {
         store.commit('CHANGE_LOADING', false)
         next()

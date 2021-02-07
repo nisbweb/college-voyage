@@ -19,6 +19,9 @@
             align="center"
             class="form"
           >
+          <div id="ImageWrapper">
+            <img src="@/assets/timepass.svg" alt="Waiting illustration">
+          </div>
             <h4>The event will start Shortly. Please be patient.</h4>
 
           </vs-col>
@@ -29,11 +32,27 @@
 </template>
 
 <script>
-export default {
+import firebaseApp from '@/firebase_config'
 
+export default {
+  mounted () {
+    firebaseApp.db.collection('admin').doc('actual').onSnapshot((snapshot) => {
+      const adminDoc = snapshot.data()
+      if (adminDoc.started === true) {
+        setTimeout(() => {
+          this.$router.push({ name: 'Home' })
+        }, 2000)
+      }
+    })
+  }
 }
 </script>
 
-<style>
-
+<style scoped>
+#ImageWrapper {
+  padding: 0 2rem;
+}
+#ImageWrapper img {
+  width: 100%;
+}
 </style>

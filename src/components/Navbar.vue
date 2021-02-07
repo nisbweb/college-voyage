@@ -48,7 +48,7 @@ export default {
 
 #brandText {
   margin: 0 15px;
-
+  font-weight: 600;
 }
 
 </style>
