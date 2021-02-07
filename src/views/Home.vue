@@ -177,7 +177,7 @@ export default {
     },
     notifyInsta () {
       this.$vs.notification({
-        title: '<span class="instagramLink" >@bot_binod</span>, who you may know is on instagram, would you like to view their profile?',
+        title: '<span class="InstagramTag" >@bot_binod</span>, who you may know is on instagram, would you like to view their profile?',
         duration: 'none',
         position: 'top-center',
         icon: '<i class="bx bxs-user-pin" ></i>',

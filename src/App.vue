@@ -45,13 +45,14 @@ export default {
 * {
   font-family: Avenir, Helvetica, Arial, sans-serif;
 }
-span.instagramLink {
+span.InstagramTag {
   /* color: lightseagreen; */
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 0%, #fd5949 35%, #d6249f 100%);
   -webkit-background-clip: text;
           /* Also define standard property for compatibility */
           background-clip: text;
   -webkit-text-fill-color: transparent;
+  cursor: pointer;
 }
 #app {
   /* font-family: Poppins,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif; */
