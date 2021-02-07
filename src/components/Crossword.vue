@@ -3,11 +3,11 @@
 
     <div class="questionHeader">
 
-      <h2 class="not-margin">
+      <h2 class="not-margin QuestionNumber">
         #Question_{{questionNumber}}
       </h2>
     </div>
-    <div style="text-align:left;margin: 5px 15px 10px 15px;">{{ question.question }}</div>
+    <div class="QuestionString">{{ question.question }}</div>
     <vs-row align="center">
       <vs-col w="12" v-for="(i,index) in answer" :key="index">
 

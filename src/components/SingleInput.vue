@@ -3,11 +3,11 @@
 
     <div class="questionHeader">
 
-      <h2 class="not-margin">
+      <h2 class="not-margin QuestionNumber">
         #Question_{{questionNumber}}
       </h2>
     </div>
-    <div style="text-align:left;margin: 5px 15px 10px 15px;">{{ question.question }}</div>
+    <div class="QuestionString">{{ question.question }}</div>
     <vs-row align="center">
       <vs-col w="9">
 
@@ -73,6 +73,14 @@ export default {
 }
 .vs-input__loading {
   margin: 1rem;
+}
+.QuestionString {
+  text-align: left;
+  margin: 5px 15px 10px 15px;
+  font-size: 1.4rem;
+}
+.QuestionNumber {
+  font-size: 1.8rem;
 }
 </style>
 
