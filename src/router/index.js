@@ -39,6 +39,14 @@ const routes = [
     meta: {
       requiresAuth: true
     }
+  },
+  {
+    path: '/congratulations',
+    name: 'Congratulations',
+    component: () => import('../views/Congratulations.vue'),
+    meta: {
+      requiresAuth: true
+    }
   }
 ]
 
@@ -102,7 +110,10 @@ router.beforeEach(async (to, from, next) => {
       await Promise.all([GetAdmin, GetUser(user.uid)])
       if (store.state.admin.started === true) {
         if (store.state.user.completed === true) {
-          if (to.name === 'Leaderboard') {
+          if (from.name === 'Home' && to.name === 'Congratulations') {
+            store.commit('CHANGE_LOADING', false)
+            next()
+          } else if (to.name === 'Leaderboard') {
             store.commit('CHANGE_LOADING', false)
             next()
           } else {

@@ -135,7 +135,7 @@ export default {
       }).then(() => {
         this.loading = false
         this.$store.commit('QUIZ_COMPLETED')
-        this.$router.push({ name: 'Leaderboard' })
+        this.$router.push({ name: 'Congratulations' })
       }).catch(err => {
         console.error(err)
         this.ErrorHandler(err)

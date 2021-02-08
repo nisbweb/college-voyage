@@ -68,7 +68,7 @@ span.InstagramTag {
   background-color: rgba(255,255,255, 0.8);
   padding: 4px 12px;
   border-radius: 9px;
-  margin: 5px 0;
+  margin: 25px 0;
   box-shadow: 0px 0px 8px rgb(100 100 100 / 20%);
 }
 .questionHeader h2 {

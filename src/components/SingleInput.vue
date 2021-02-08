@@ -77,7 +77,7 @@ export default {
 .QuestionString {
   text-align: left;
   margin: 5px 15px 10px 15px;
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 .QuestionNumber {
   font-size: 1.8rem;
