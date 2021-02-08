@@ -28,7 +28,7 @@
             class="inputMargin"
           >
             <template #icon>
-              🧑🏻‍🦱
+              <img src="@/assets/man.svg" style="width:50%;" alt="">
             </template>
           </vs-input>
           <vs-input
@@ -112,10 +112,11 @@ export default {
         color: 'danger',
         position: 'top-center',
         title: 'An error occured!',
-        text: error.message
+        text: error.message ? error.message : ''
       })
     },
     emailLogin () {
+      this.$store.commit('CHANGE_LOADING', true)
       firebaseApp.auth.createUserWithEmailAndPassword(this.email, this.password).then(async (data) => {
         // console.log({
         //   displayName: this.displayName,
@@ -128,11 +129,10 @@ export default {
           id: data.user.uid,
           completed: false,
           completedTime: null,
-          progress: 0
+          progress: 0,
+          admin: false
         })
         this.userLoggedIn(data.user.uid)
-        // localStorage.setItem('logged', true)
-        // localStorage.setItem('uid', data.user.uid)
       }).catch(error => {
         console.error(error)
         if (error.message === 'The email address is already in use by another account.') {
@@ -144,9 +144,13 @@ export default {
               console.error(err)
             })
         }
+        this.ErrorHandler(error)
+      }).finally(() => {
+        this.$store.commit('CHANGE_LOADING', false)
       })
     },
     googles () {
+      this.$store.commit('CHANGE_LOADING', false)
       var provider = new firebase.auth.GoogleAuthProvider()
       firebaseApp.auth.signInWithPopup(provider).then(data => {
         firebaseApp.db.collection('users').doc(data.user.uid).get().then((val) => {
@@ -169,6 +173,8 @@ export default {
         }).catch(err => {
           console.error(err)
           this.ErrorHandler(err)
+        }).finally(() => {
+          this.$store.commit('CHANGE_LOADING', false)
         })
         // localStorage.setItem('uid', data.user.uid)
         // localStorage.setItem('logged', true)

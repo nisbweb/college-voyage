@@ -17,6 +17,7 @@
             justify="center"
             align="center"
             class="form"
+            style="margin-top: 7rem;"
           >
             <img
               src="@/assets/Eclipse.svg"

@@ -76,7 +76,7 @@ export default {
   },
   mounted () {
     if (this.user.progress >= this.admin.questionCount) {
-      this.QuizCompleted()
+      this.$router.push({ name: 'Congratulations' })
     }
     this.GetQuestion()
   },
@@ -131,7 +131,8 @@ export default {
     QuizCompleted () {
       firebaseApp.db.collection('users').doc(this.user.id).update({
         completed: true,
-        completedTime: new Date()
+        completedTime: new Date(),
+        progress: 20
       }).then(() => {
         this.loading = false
         this.$store.commit('QUIZ_COMPLETED')

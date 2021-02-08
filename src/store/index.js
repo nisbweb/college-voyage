@@ -78,6 +78,7 @@ export default new Vuex.Store({
     },
     QUIZ_COMPLETED: (state) => {
       state.user.completed = true
+      state.user.completedTime = new Date()
     }
   },
   actions: {
