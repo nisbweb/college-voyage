@@ -21,7 +21,7 @@ export default {
     Footer
   },
   mounted () {
-    // // To reset all users
+    // To reset all users
     // firebaseApp.db.collection('users').get().then(function (querySnapshot) {
     //   querySnapshot.forEach(function (doc) {
     //     doc.ref.update({

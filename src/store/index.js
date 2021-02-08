@@ -12,7 +12,8 @@ export default new Vuex.Store({
       email: null,
       completed: null,
       completedTime: null,
-      progress: null
+      progress: null,
+      admin: null
     },
     routerLoading: false,
     logged: false,
@@ -40,6 +41,9 @@ export default new Vuex.Store({
       }
       if (typeof payload.progress !== 'undefined') {
         state.user.progress = payload.progress
+      }
+      if (typeof payload.admin !== 'undefined') {
+        state.user.admin = payload.admin
       }
       state.logged = true
     },

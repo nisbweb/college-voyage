@@ -85,7 +85,7 @@ const GetUser = (payload) => {
     firebaseApp.db
       .collection('users')
       .doc(payload)
-      .get()
+      .get({ source: 'server' })
       .then(val => {
         store.commit('EDIT_USER', val.data())
         resolve()
@@ -108,7 +108,10 @@ router.beforeEach(async (to, from, next) => {
     } else if (user) {
       // store.dispatch('FETCH_USER', user.uid)
       await Promise.all([GetAdmin, GetUser(user.uid)])
-      if (store.state.admin.started === true) {
+      if (to.name === 'Leaderboard' && store.state.user.admin === true) {
+        store.commit('CHANGE_LOADING', false)
+        next()
+      } else if (store.state.admin.started === true) {
         if (store.state.user.completed === true) {
           if (from.name === 'Home' && to.name === 'Congratulations') {
             store.commit('CHANGE_LOADING', false)
